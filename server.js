@@ -12,12 +12,17 @@ const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
 // Endpoint to initialize a transaction
 app.post('/api/paystack/initialize', async (req, res) => {
-    const { email, amount } = req.body; // amount should be in the smallest currency unit (e.g., kobo, cents)
+    // 1. Destructure callback_url from the request body
+    const { email, amount, callback_url } = req.body; 
 
     try {
         const response = await axios.post(
             'https://api.paystack.co/transaction/initialize',
-            { email, amount },
+            { 
+                email, 
+                amount,
+                callback_url: callback_url || 'https://swiftselect.onrender.com' // 2. Pass it to Paystack, with a fallback
+            },
             { headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` } }
         );
         // Send back the access_code and reference to the frontend
