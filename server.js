@@ -21,7 +21,8 @@ app.post('/api/paystack/initialize', async (req, res) => {
             { 
                 email, 
                 amount,
-                callback_url: callback_url || 'https://swiftselect.onrender.com' // 2. Pass it to Paystack, with a fallback
+                // 2. Pass the callback_url to Paystack so it knows where to redirect the user after payment
+                callback_url: callback_url || 'https://swiftselect.onrender.com' 
             },
             { headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` } }
         );
